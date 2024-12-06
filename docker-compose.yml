@@ -1,0 +1,35 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "5000:5000"
+    environment:
+      PG_HOST: db
+      PG_PORT: 5432
+      PG_DATABASE: ecommerce
+      PG_USER: postgres
+      PG_PASSWORD: linux
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./ecommerce-app
+    ports:
+      - "3000:3000"
+
+  db:
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_DB: ecommerce
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: linux
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
